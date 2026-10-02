@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { env } from './config/env.js';
+import apiRoutes from './routes/index.js';   // ← NEW
 
 export function createApp() {
   const app = express();
@@ -13,7 +14,7 @@ export function createApp() {
   app.use(express.urlencoded({ extended: true }));
   app.use(morgan(env.logLevel));
 
-  // Health check
+  // Health
   app.get('/health', (req, res) => {
     res.json({
       ok: true,
@@ -29,12 +30,15 @@ export function createApp() {
     res.json({ name: 'WhatsApp Task Reminder API', version: '0.1.0' });
   });
 
+  // API routes
+  app.use('/api', apiRoutes);                // ← NEW
+
   // 404
   app.use((req, res) => {
     res.status(404).json({ error: 'Not Found', path: req.originalUrl });
   });
 
-  // Error handler (Phase 4 will build on this)
+  // Error handler
   app.use((err, req, res, next) => {
     console.error('💥 Error:', err);
     res.status(err.status || 500).json({
