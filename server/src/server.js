@@ -1,3 +1,4 @@
+import './models/index.js';   // register all schemas + indexes
 import { createApp } from './app.js';
 import { connectDB } from './config/db.js';
 import { env } from './config/env.js';
