@@ -37,14 +37,19 @@ export function createApp() {
   app.use((req, res) => {
     res.status(404).json({ error: 'Not Found', path: req.originalUrl });
   });
-
-  // Error handler
-  app.use((err, req, res, next) => {
+  
+  
+// Error handler
+app.use((err, req, res, next) => {
+  const status = err.status || 500;
+  if (status >= 500) {
     console.error('💥 Error:', err);
-    res.status(err.status || 500).json({
-      error: err.message || 'Internal Server Error',
-    });
+  }
+  res.status(status).json({
+    ok: false,
+    error: err.message || 'Internal Server Error',
   });
+});
 
   return app;
 }
