@@ -50,11 +50,11 @@ async function processCollection(Model, format) {
   let failedCount = 0;
 
   for (const { _id } of candidates) {
-const claimed = await Model.findOneAndUpdate(
-  { _id, sent: false, attempts: { $lt: MAX_ATTEMPTS } },
-  { $inc: { attempts: 1 } },
-  { returnDocument: 'after' }       // ← modern API
-).populate('userId');
+    const claimed = await Model.findOneAndUpdate(
+      { _id, sent: false, attempts: { $lt: MAX_ATTEMPTS } },
+      { $inc: { attempts: 1 } },
+      { new: true }
+    ).populate('userId');
 
     if (!claimed) continue;
 
@@ -86,34 +86,16 @@ const claimed = await Model.findOneAndUpdate(
       );
       sentCount++;
       console.log(`✅ ${Model.modelName} ${_id} → ${claimed.userId.whatsappId}`);
-} catch (err) {
-  const msg = err.waError?.error?.message || err.message || 'unknown error';
-  const isNetworkError =
-    err.code === 'ENOTFOUND' ||
-    err.code === 'EAI_AGAIN' ||
-    msg.includes('ENOTFOUND') ||
-    msg.includes('EAI_AGAIN');
-
-  const updates = { lastError: msg };
-
-  if (isNetworkError) {
-    // Give back the attempt we spent on claim; retry next tick without penalty
-    await Model.updateOne(
-      { _id },
-      { $set: updates, $inc: { attempts: -1 } }
-    );
-    console.warn(`🌐 ${Model.modelName} ${_id}: network error, will retry`);
-  } else {
-    // Genuine error (WhatsApp rejected, bad payload, etc.) — count it
-    if (claimed.attempts >= MAX_ATTEMPTS && Model.modelName === 'Task') {
-      updates.status = 'failed';
+    } catch (err) {
+      const msg = err.waError?.error?.message || err.message || 'unknown error';
+      const updates = { lastError: msg };
+      if (claimed.attempts >= MAX_ATTEMPTS && Model.modelName === 'Task') {
+        updates.status = 'failed';
+      }
+      await Model.updateOne({ _id }, { $set: updates });
+      failedCount++;
+      console.error(`❌ ${Model.modelName} ${_id}: ${msg}`);
     }
-    await Model.updateOne({ _id }, { $set: updates });
-    console.error(`❌ ${Model.modelName} ${_id}: ${msg}`);
-  }
-
-  failedCount++;
-}
   }
 
   return { sent: sentCount, failed: failedCount };

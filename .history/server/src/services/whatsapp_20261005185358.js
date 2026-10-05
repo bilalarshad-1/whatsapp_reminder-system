@@ -6,7 +6,7 @@ import { env } from '../config/env.js';
 
 const client = axios.create({
   baseURL: env.whatsapp.base,
-  timeout: 15000, 
+  timeout: 15000,
   headers: {
     Authorization: `Bearer ${env.whatsapp.key}`,
     'Content-Type': 'application/json',

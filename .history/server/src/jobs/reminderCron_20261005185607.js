@@ -50,11 +50,11 @@ async function processCollection(Model, format) {
   let failedCount = 0;
 
   for (const { _id } of candidates) {
-const claimed = await Model.findOneAndUpdate(
-  { _id, sent: false, attempts: { $lt: MAX_ATTEMPTS } },
-  { $inc: { attempts: 1 } },
-  { returnDocument: 'after' }       // ← modern API
-).populate('userId');
+    const claimed = await Model.findOneAndUpdate(
+      { _id, sent: false, attempts: { $lt: MAX_ATTEMPTS } },
+      { $inc: { attempts: 1 } },
+      { new: true }
+    ).populate('userId');
 
     if (!claimed) continue;
 

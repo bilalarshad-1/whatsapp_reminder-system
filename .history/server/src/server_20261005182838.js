@@ -22,7 +22,7 @@ async function start() {
   };
   process.on('SIGINT', () => shutdown('SIGINT'));
   process.on('SIGTERM', () => shutdown('SIGTERM'));
-// app.use(cors({ origin: ['http://localhost:5173'] }));
+app.use(cors({ origin: ['http://localhost:5173'] }));
   // Crash safety
   process.on('unhandledRejection', (reason) => {
     console.error('Unhandled Rejection:', reason);

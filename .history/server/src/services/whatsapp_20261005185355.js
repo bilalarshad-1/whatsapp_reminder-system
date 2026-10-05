@@ -1,12 +1,10 @@
-import dns from 'node:dns';
-dns.setServers(['8.8.8.8', '1.1.1.1']);
-dns.setDefaultResultOrder('ipv4first');
+
 import axios from 'axios';
 import { env } from '../config/env.js';
 
 const client = axios.create({
   baseURL: env.whatsapp.base,
-  timeout: 15000, 
+  timeout: 15000,
   headers: {
     Authorization: `Bearer ${env.whatsapp.key}`,
     'Content-Type': 'application/json',
