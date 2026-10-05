@@ -2,11 +2,11 @@ import './models/index.js';
 import { createApp } from './app.js';
 import { connectDB } from './config/db.js';
 import { env } from './config/env.js';
-import { startReminderCron } from './jobs/reminderCron.js';   
+import { startReminderCron } from './jobs/reminderCron.js';   // ← NEW
 
 async function start() {
   await connectDB();
-  startReminderCron();                                        
+  startReminderCron();                                        // ← NEW
 
   const app = createApp();
   const server = app.listen(env.port, () => {

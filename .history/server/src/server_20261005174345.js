@@ -6,7 +6,7 @@ import { startReminderCron } from './jobs/reminderCron.js';
 
 async function start() {
   await connectDB();
-  startReminderCron();                                        
+  startReminderCron();                                        // ← NEW
 
   const app = createApp();
   const server = app.listen(env.port, () => {

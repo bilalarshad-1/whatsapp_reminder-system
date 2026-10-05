@@ -1,14 +1,13 @@
-import './models/index.js';
+import './models/index.js';   // register all schemas + indexes
 import { createApp } from './app.js';
 import { connectDB } from './config/db.js';
 import { env } from './config/env.js';
-import { startReminderCron } from './jobs/reminderCron.js';   
 
 async function start() {
   await connectDB();
-  startReminderCron();                                        
 
   const app = createApp();
+
   const server = app.listen(env.port, () => {
     console.log(`🚀 API listening on http://localhost:${env.port}  [${env.nodeEnv}]`);
     console.log(`   Health: http://localhost:${env.port}/health`);
