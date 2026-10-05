@@ -6,9 +6,6 @@ import { env } from './config/env.js';
 import apiRoutes from './routes/index.js';   // ← NEW
 
 export function createApp() {
-  if (env.nodeEnv === 'production') {
-  app.set('trust proxy', 1);
-}
   const app = express();
 
   app.use(helmet());
@@ -17,7 +14,7 @@ export function createApp() {
   app.use(express.urlencoded({ extended: true }));
   app.use(morgan(env.logLevel));
 
-
+import { env } from './config/env.js';
 
 const allowedOrigins = (process.env.CORS_ORIGINS || '')
   .split(',')

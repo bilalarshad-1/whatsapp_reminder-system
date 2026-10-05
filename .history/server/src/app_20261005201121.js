@@ -6,9 +6,6 @@ import { env } from './config/env.js';
 import apiRoutes from './routes/index.js';   // ← NEW
 
 export function createApp() {
-  if (env.nodeEnv === 'production') {
-  app.set('trust proxy', 1);
-}
   const app = express();
 
   app.use(helmet());
@@ -18,24 +15,7 @@ export function createApp() {
   app.use(morgan(env.logLevel));
 
 
-
-const allowedOrigins = (process.env.CORS_ORIGINS || '')
-  .split(',')
-  .map((s) => s.trim())
-  .filter(Boolean);
-
-app.use(
-  cors({
-    origin:
-      env.nodeEnv === 'production'
-        ? allowedOrigins.length
-          ? allowedOrigins
-          : false
-        : true,
-    credentials: false,
-  })
-);
-
+  
   // Health
   app.get('/health', (req, res) => {
     res.json({
