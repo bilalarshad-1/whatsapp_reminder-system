@@ -1,4 +1,0 @@
-cd D:\reminder\reminder-system
-git add .
-git status   # confirm server/.env and client/.env are NOT listed
-git commit -m "Phase : React dashboard (tasks, reminders, notes, settings)"
