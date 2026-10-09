@@ -22,7 +22,7 @@ export function toLocalInput(dateLike) {
 }
 
 /**
- * Formats a UTC ISO string for display in the users browser locale.
+ * Formats a UTC ISO string for display in the user's browser locale.
  */
 export function formatLocal(dateLike, opts = {}) {
   const d = new Date(dateLike);

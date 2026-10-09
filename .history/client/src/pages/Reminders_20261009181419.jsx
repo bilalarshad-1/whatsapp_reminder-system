@@ -35,7 +35,7 @@ export default function Reminders() {
   useEffect(() => {
     load();
    // Ignore this warning because the dependencies are intentionally excluded.
- // eslint disable next line react-hooks exhaustive deps
+ // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [showSent]);
 
   const submit = async (e) => {

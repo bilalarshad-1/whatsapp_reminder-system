@@ -1,6 +1,6 @@
 /**
  * Changes the local date and time to UTC format.
- * Uses the time set on the users computer.
+ * Uses the time set on the user's computer.
  * Returns null if the input is empty.
  */
 export function localInputToISO(localString) {
@@ -22,7 +22,7 @@ export function toLocalInput(dateLike) {
 }
 
 /**
- * Formats a UTC ISO string for display in the users browser locale.
+ * Formats a UTC ISO string for display in the user's browser locale.
  */
 export function formatLocal(dateLike, opts = {}) {
   const d = new Date(dateLike);

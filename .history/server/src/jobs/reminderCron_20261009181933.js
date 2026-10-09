@@ -13,18 +13,18 @@ function formatTask(task) {
         timeZone: task.userId.timezone || "Asia/Karachi",
       })
     : "";
-  const lines = [` *Task reminder*`, task.title];
+  const lines = [`⏰ *Task reminder*`, task.title];
   if (task.description) lines.push("", task.description);
   if (due) lines.push("", `Due: ${due}`);
   return lines.join("\n");
 }
 
 function formatReminder(reminder) {
-  return `*Reminder*\n${reminder.text}`;
+  return `🔔 *Reminder*\n${reminder.text}`;
 }
 
 function formatNote(note) {
-  const lines = [`*Note*`, note.title];
+  const lines = [`📝 *Note*`, note.title];
   if (note.body) lines.push("", note.body);
   if (note.tags?.length) lines.push("", `#${note.tags.join(" #")}`);
   return lines.join("\n");
@@ -45,7 +45,7 @@ async function processCollection(Model, format) {
 
   if (candidates.length === 0) return { sent: 0, failed: 0 };
 
-  console.log(`${Model.modelName}: ${candidates.length} due`);
+  console.log(`⏱  ${Model.modelName}: ${candidates.length} due`);
 
   let sentCount = 0;
   let failedCount = 0;
@@ -84,7 +84,7 @@ async function processCollection(Model, format) {
       );
       sentCount++;
       console.log(
-        ` ${Model.modelName} ${_id} → ${claimed.userId.whatsappId}`,
+        `✅ ${Model.modelName} ${_id} → ${claimed.userId.whatsappId}`,
       );
     } catch (err) {
       const msg = err.waError?.error?.message || err.message || "unknown error";
@@ -102,7 +102,7 @@ async function processCollection(Model, format) {
           { _id },
           { $set: { lastError: msg }, $inc: { attempts: -1 } },
         );
-        console.warn(`${Model.modelName} ${_id}: network error, will retry`);
+        console.warn(`🌐 ${Model.modelName} ${_id}: network error, will retry`);
       } else {
         const updates = { lastError: msg };
         if (claimed.attempts >= MAX_ATTEMPTS && Model.modelName === "Task") {
@@ -119,7 +119,7 @@ async function processCollection(Model, format) {
 }
 
 export function startReminderCron() {
-  console.log(`Scheduler started — ${CRON_EXPRESSION} (every minute)`);
+  console.log(`🕐 Scheduler started — ${CRON_EXPRESSION} (every minute)`);
 
   let running = false;
 
@@ -142,7 +142,7 @@ export function startReminderCron() {
       };
       if (totals.sent || totals.failed) {
         console.log(
-          `tick done in ${Date.now() - started}ms — sent:${totals.sent} failed:${totals.failed}`,
+          `📊 tick done in ${Date.now() - started}ms — sent:${totals.sent} failed:${totals.failed}`,
         );
         // in tick after processing:
         await Heartbeat.findOneAndUpdate(

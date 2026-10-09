@@ -13,14 +13,14 @@ function formatTask(task) {
         timeZone: task.userId.timezone || "Asia/Karachi",
       })
     : "";
-  const lines = [` *Task reminder*`, task.title];
+  const lines = [`⏰ *Task reminder*`, task.title];
   if (task.description) lines.push("", task.description);
   if (due) lines.push("", `Due: ${due}`);
   return lines.join("\n");
 }
 
 function formatReminder(reminder) {
-  return `*Reminder*\n${reminder.text}`;
+  return `🔔 *Reminder*\n${reminder.text}`;
 }
 
 function formatNote(note) {

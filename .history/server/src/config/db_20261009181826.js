@@ -13,14 +13,14 @@ export async function connectDB() {
     });
     console.log(` MongoDB connected: ${mongoose.connection.host}/${mongoose.connection.name}`);
   } catch (err) {
-    console.error(' MongoDB connection error:', err.message);
+    console.error('❌ MongoDB connection error:', err.message);
     process.exit(1);
   }
 
   mongoose.connection.on('disconnected', () => {
-    console.warn('MongoDB disconnected');
+    console.warn('⚠️  MongoDB disconnected');
   });
   mongoose.connection.on('reconnected', () => {
-    console.log('MongoDB reconnected');
+    console.log('✅ MongoDB reconnected');
   });
 }

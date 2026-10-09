@@ -21,6 +21,6 @@ export async function connectDB() {
     console.warn('MongoDB disconnected');
   });
   mongoose.connection.on('reconnected', () => {
-    console.log('MongoDB reconnected');
+    console.log('✅ MongoDB reconnected');
   });
 }
